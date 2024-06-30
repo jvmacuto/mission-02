@@ -41,6 +41,8 @@ describe("Cars Route", () => {
     const response = await request(app).get("/cars");
     expect(response.headers["content-type"]).toMatch("json");
   });
+
+  
 });
 
 //Use a specific path

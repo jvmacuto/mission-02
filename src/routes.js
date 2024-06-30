@@ -5,11 +5,6 @@ const controller = require("./controller");
 
 //display message
 
-router.get("/", controller.index);
-
-router.get("/home", controller.home);
-
-//get all cars
-router.get("/cars", controller.getAllCars);
+router.get("/", controller.getAllCars);
 
 module.exports = { router };

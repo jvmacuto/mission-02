@@ -3,7 +3,6 @@ const userModel = require("../src/model");
 const getAllCars = (req, res) => {
   userModel.queryAllCars().then((data) => {
     const dataString = JSON.stringify(data);
-    res.status(200).send(dataString);
 
     // Parse the string back to an object
     const parsedData = JSON.parse(dataString);
@@ -32,6 +31,8 @@ const getAllCars = (req, res) => {
       );
     });
   });
+
+  res.status(200).send("Cars fetched successfully");
 };
 
 module.exports = { getAllCars };

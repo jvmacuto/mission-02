@@ -4,8 +4,12 @@ const queryAllCars = () => {
   return pool
     .promise()
     .query("SELECT * FROM cars")
-    .then((result) => result[0])
-    .catch((err) => console.log(err));
+    .then(([rows]) => {
+      return rows;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 module.exports = {

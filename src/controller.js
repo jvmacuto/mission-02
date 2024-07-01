@@ -1,14 +1,10 @@
 const userModel = require("../src/model");
 
+const carObject = {};
+
 const getAllCars = (req, res) => {
   userModel.queryAllCars().then((data) => {
-    const dataString = JSON.stringify(data);
-
-    // Parse the string back to an object
-    const parsedData = JSON.parse(dataString);
-
-    // Assuming parsedData is an array of car objects
-    parsedData.forEach((car) => {
+    data.forEach((car) => {
       const carName = String(car.name);
       const carYear = car.year;
 
@@ -25,14 +21,16 @@ const getAllCars = (req, res) => {
             return char;
           }
         });
-
-      console.log(
-        `PRICE OF ${carName} is $${addCarNameNumbers * 100 + carYear}`
-      );
+      carObject[carName] = {
+        addCarNameNumbers: addCarNameNumbers * 100 + carYear,
+        carYear: carYear,
+      };
     });
+    console.log(carObject);
+    res.send(carObject);
   });
 
-  res.status(200).send("Cars fetched successfully");
+  //send a message to app.test.js
 };
 
 module.exports = { getAllCars };

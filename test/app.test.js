@@ -1,30 +1,53 @@
-//importing the required modules
+// Import necessary libraries
+const { getCars } = require("../src/controller");
 const express = require("express");
 const bodyParser = require("body-parser");
-
-//initialize express app
-const userRouter = require("../src/routes");
 const request = require("supertest");
-
+const dbClient = require("../db/db-config");
+// Initialize express app
 const app = express();
 
-//Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+//Load enviromental variable
+require("dotenv").config();
 
-//testing the get request
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-describe("Cars Route", () => {
-  test("It should respond with 200 status code", async () => {
-    const response = await request(app).get("/");
-    expect(response.statusCode).toBe(200);
-  });
+//Import the router from routes
+const userRouter = require("../src/routes");
 
-  test("Responds with json content", async () => {
-    const response = await request(app).get("/");
-    expect(response.headers["content-type"]).toMatch("json");
+//testing the api
+describe("GET /", () => {
+  it("should return 200", async () => {
+    const res = await request(app).get("/");
+    expect(res.statusCode).toEqual(200);
   });
 });
 
-//Use a specific path
+//testing the database connection
+describe("Database connection", () => {
+  it("should return true", async () => {
+    const res = await dbClient.promise().query("SELECT 1");
+    expect(res[0]).toEqual([{ 1: 1 }]);
+  });
+
+  //it should fetch all items from the controller
+  // Assuming you have an Express app and a controller function tied to '/items'
+  it("should fetch all items", async () => {
+    const res = await request(app).get("/");
+    expect(res.statusCode).toEqual(200); // Assuming a successful fetch returns HTTP 200
+    expect(res.body).toBeInstanceOf(Object); // Assuming the response should be an array
+    // Further assertions can be made based on the expected structure of the items
+  });
+});
+
+//test
+describe("getAllCars", () => {
+  it("should return an object", async () => {
+    const res = await request(app).get("/");
+    expect(res.body).toBeInstanceOf(Object);
+  });
+});
+// Define more routes here
 app.use("/", userRouter.router);

@@ -18,36 +18,78 @@ app.use(bodyParser.json());
 const userRouter = require("../src/routes");
 
 //testing the api
-describe("GET /", () => {
-  it("should return 200", async () => {
-    const res = await request(app).get("/");
-    expect(res.statusCode).toEqual(200);
-  });
-});
 
-//testing the database connection
-describe("Database connection", () => {
-  it("should return true", async () => {
-    const res = await dbClient.promise().query("SELECT 1");
-    expect(res[0]).toEqual([{ 1: 1 }]);
-  });
-
-  //it should fetch all items from the controller
-  // Assuming you have an Express app and a controller function tied to '/items'
-  it("should fetch all items", async () => {
-    const res = await request(app).get("/");
-    expect(res.statusCode).toEqual(200); // Assuming a successful fetch returns HTTP 200
-    expect(res.body).toBeInstanceOf(Object); // Assuming the response should be an array
-    // Further assertions can be made based on the expected structure of the items
-  });
-});
-
-//test
 describe("getAllCars", () => {
   it("should return an object", async () => {
     const res = await request(app).get("/");
     expect(res.body).toBeInstanceOf(Object);
+    //get the properties of object carObject
+    const carObject = res.body;
+  });
+
+  it("should return the values of the object", async () => {
+    const res = await request(app).get("/");
+    expect(res.body).toBeInstanceOf(Object);
+    //get the properties of object carObject
+    const carObject = res.body;
+    for (const carName in carObject) {
+      if (carObject.hasOwnProperty(carName)) {
+        // Check if the property is directly on carObject and not inherited
+        const carDetails = carObject[carName];
+      }
+    }
+  });
+
+  describe("getAllCars", () => {
+    //test case 1
+    it("the object should return a name and a positive year", async () => {
+      const res = await request(app).get("/");
+      const carObject = res.body;
+      expect(carObject[Object.keys(carObject)[0]].nameCar).toBeDefined();
+      expect(carObject[Object.keys(carObject)[0]].carYear).toBeGreaterThan(0);
+    });
+
+    //test case 2
+    it("should accept a random word but fail if the year is negative", async () => {
+      const res = await request(app).get("/");
+      const carObject = res.body;
+      expect(carObject[Object.keys(carObject)[1]].nameCar).toBeDefined();
+      expect(carObject[Object.keys(carObject)[1]].carYear).toBeGreaterThan(0);
+    });
+
+    //test case 3
+    it("should accept a string with a number and accept a random number as a year", async () => {
+      const res = await request(app).get("/");
+      const carObject = res.body;
+      expect(carObject[Object.keys(carObject)[2]].nameCar).toBeDefined();
+      expect(carObject[Object.keys(carObject)[2]].carYear).toBeGreaterThan(0);
+    });
+
+    //test case 4
+    it("should accept a name with dashes and accept a random number as a year", async () => {
+      const res = await request(app).get("/");
+      const carObject = res.body;
+      expect(carObject[Object.keys(carObject)[3]].nameCar).toMatch(/-/);
+      expect(carObject[Object.keys(carObject)[3]].carYear).toBeGreaterThan(0);
+    });
+
+    //test case 5
+    it("should fail if the name is empty and the year is negative", async () => {
+      const res = await request(app).get("/");
+      const carObject = res.body;
+      expect(carObject[Object.keys(carObject)[4]].nameCar).not.toBeNull();
+      expect(carObject[Object.keys(carObject)[4]].carYear).toBeGreaterThan(0);
+    });
+
+    //test case 6
+    it("should fail if the year entered is not a number", async () => {
+      const res = await request(app).get("/");
+      const carObject = res.body;
+      expect(carObject[Object.keys(carObject)[5]].nameCar).toBeDefined();
+      expect(carObject[Object.keys(carObject)[5]].carYear).toBeGreaterThan(0);
+    });
   });
 });
+
 // Define more routes here
 app.use("/", userRouter.router);

@@ -6,7 +6,7 @@ const getAllCars = (req, res) => {
   userModel.queryAllCars().then((data) => {
     data.forEach((car) => {
       const carName = String(car.name);
-      const carYear = car.year;
+      const carYear = parseInt(car.year);
 
       let addCarNameNumbers = 0;
       const carNameAsNumbers = carName
@@ -17,16 +17,29 @@ const getAllCars = (req, res) => {
           if (char >= "A" && char <= "Z") {
             return (addCarNameNumbers +=
               char.charCodeAt(0) - "A".charCodeAt(0) + 1);
+          }
+          //check if the char is a number
+          else if (char >= "0" && char <= "9") {
+            return (addCarNameNumbers += parseInt(char));
           } else {
             return char;
           }
         });
       carObject[carName] = {
-        addCarNameNumbers: addCarNameNumbers * 100 + carYear,
+        nameCar: carName,
+        addCarNameNumbers: addCarNameNumbers * 100 + parseInt(carYear),
         carYear: carYear,
       };
     });
-    console.log(carObject);
+    for (const carName in carObject) {
+      if (carObject.hasOwnProperty(carName)) {
+        // Check if the property is directly on carObject and not inherited
+        const carDetails = carObject[carName];
+        console.log(
+          `Car Name: ${carName}, Total: ${carDetails.addCarNameNumbers}, Year: ${carDetails.carYear}`
+        );
+      }
+    }
     res.send(carObject);
   });
 

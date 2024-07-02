@@ -6,7 +6,7 @@ const getAllCars = (req, res) => {
   userModel.queryAllCars().then((data) => {
     data.forEach((car) => {
       const carName = String(car.name);
-      const carYear = parseInt(car.year);
+      const carYear = car.year;
 
       let addCarNameNumbers = 0;
       const carNameAsNumbers = carName
@@ -17,19 +17,18 @@ const getAllCars = (req, res) => {
           if (char >= "A" && char <= "Z") {
             return (addCarNameNumbers +=
               char.charCodeAt(0) - "A".charCodeAt(0) + 1);
-          }
-          //check if the char is a number
-          else if (char >= "0" && char <= "9") {
-            return (addCarNameNumbers += parseInt(char));
           } else {
             return char;
           }
         });
-      carObject[carName] = {
-        nameCar: carName,
-        addCarNameNumbers: addCarNameNumbers * 100 + parseInt(carYear),
-        carYear: carYear,
-      };
+
+      if (carNameAsNumbers.length > 0) {
+        carObject[carName] = {
+          nameCar: carName,
+          addCarNameNumbers: addCarNameNumbers * 100 + parseInt(carYear),
+          carYear: parseInt(carYear),
+        };
+      }
     });
     for (const carName in carObject) {
       if (carObject.hasOwnProperty(carName)) {

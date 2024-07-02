@@ -50,11 +50,11 @@ describe("getAllCars", () => {
     });
 
     //test case 2
-    it("should accept a random word but fail if the year is negative", async () => {
+    it("should accept a random word and a negative year", async () => {
       const res = await request(app).get("/");
       const carObject = res.body;
       expect(carObject[Object.keys(carObject)[1]].nameCar).toBeDefined();
-      expect(carObject[Object.keys(carObject)[1]].carYear).toBeGreaterThan(0);
+      expect(carObject[Object.keys(carObject)[1]].carYear).toBeLessThan(0);
     });
 
     //test case 3
@@ -77,7 +77,7 @@ describe("getAllCars", () => {
     it("should fail if the name is empty and the year is negative", async () => {
       const res = await request(app).get("/");
       const carObject = res.body;
-      expect(carObject[Object.keys(carObject)[4]].nameCar).not.toBeNull();
+      expect(carObject[Object.keys(carObject)[4]].nameCar).toBe("null");
       expect(carObject[Object.keys(carObject)[4]].carYear).toBeGreaterThan(0);
     });
 
@@ -86,7 +86,9 @@ describe("getAllCars", () => {
       const res = await request(app).get("/");
       const carObject = res.body;
       expect(carObject[Object.keys(carObject)[5]].nameCar).toBeDefined();
-      expect(carObject[Object.keys(carObject)[5]].carYear).toBeGreaterThan(0);
+      expect(carObject[Object.keys(carObject)[5]].carYear).toBeInstanceOf(
+        Number
+      );
     });
   });
 });

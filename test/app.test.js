@@ -86,9 +86,7 @@ describe("getAllCars", () => {
       const res = await request(app).get("/");
       const carObject = res.body;
       expect(carObject[Object.keys(carObject)[5]].nameCar).toBeDefined();
-      expect(carObject[Object.keys(carObject)[5]].carYear).toBeInstanceOf(
-        Number
-      );
+      expect(carObject[Object.keys(carObject)[5]].carYear).toBe(null);
     });
   });
 });

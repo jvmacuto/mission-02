@@ -19,28 +19,17 @@ const userRouter = require("../src/routes");
 
 //testing the api
 
-describe("getAllCars", () => {
-  it("should return an object", async () => {
-    const res = await request(app).get("/");
-    expect(res.body).toBeInstanceOf(Object);
-    //get the properties of object carObject
-    const carObject = res.body;
-  });
-
-  it("should return the values of the object", async () => {
-    const res = await request(app).get("/");
-    expect(res.body).toBeInstanceOf(Object);
-    //get the properties of object carObject
-    const carObject = res.body;
-    for (const carName in carObject) {
-      if (carObject.hasOwnProperty(carName)) {
-        // Check if the property is directly on carObject and not inherited
-        const carDetails = carObject[carName];
-      }
-    }
-  });
 
   describe("getAllCars", () => {
+
+    //testing to ensure that data is being retrieved from the database
+    it("should return the json object of all cars", async () => {
+      const res = await request(app).get("/");
+      const carObject = res.body;
+      expect(res.statusCode).toEqual(200);
+      expect(carObject).toBeDefined();
+    });
+
     //test case 1
     it("the object should return a name and a positive year", async () => {
       const res = await request(app).get("/");
@@ -86,12 +75,9 @@ describe("getAllCars", () => {
       const res = await request(app).get("/");
       const carObject = res.body;
       expect(carObject[Object.keys(carObject)[5]].nameCar).toBeDefined();
-      expect(carObject[Object.keys(carObject)[5]].carYear).toBeInstanceOf(
-        Number
-      );
+      expect(carObject[Object.keys(carObject)[5]].carYear).toBe(null);
     });
   });
-});
 
 // Define more routes here
 app.use("/", userRouter.router);

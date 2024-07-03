@@ -21,23 +21,18 @@ const getAllCars = (req, res) => {
             return char;
           }
         });
-
-      if (carNameAsNumbers.length > 0) {
-        carObject[carName] = {
-          nameCar: carName,
-          addCarNameNumbers: addCarNameNumbers * 100 + parseInt(carYear),
-          carYear: parseInt(carYear),
-        };
-      }
+      carObject[carName] = {
+        nameCar: carName,
+        addCarNameNumbers: addCarNameNumbers * 100 + parseInt(carYear),
+        carYear: parseInt(carYear),
+      };
     });
     for (const carName in carObject) {
-      if (carObject.hasOwnProperty(carName)) {
-        // Check if the property is directly on carObject and not inherited
-        const carDetails = carObject[carName];
-        console.log(
-          `Car Name: ${carName}, Total: ${carDetails.addCarNameNumbers}, Year: ${carDetails.carYear}`
-        );
-      }
+      // Check if the property is directly on carObject and not inherited
+      const carDetails = carObject[carName];
+      console.log(
+        `Car Name: ${carName}, Total: ${carDetails.addCarNameNumbers}, Year: ${carDetails.carYear}`
+      );
     }
     res.send(carObject);
   });

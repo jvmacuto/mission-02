@@ -39,7 +39,7 @@ const getAllCars = (req, res) => {
         );
       }
     }
-    res.send(carObject);
+    res.json(carObject);
   });
 
   //send a message to app.test.js

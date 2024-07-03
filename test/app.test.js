@@ -37,6 +37,7 @@ describe("getAllCars", () => {
     expect(Object.keys(carObject).length).toBeGreaterThan(0);
 
     for (const carName in carObject) {
+      const carDetails = carObject[carName];
       if (carObject.hasOwnProperty(carName)) {
         // Check if carDetails is not undefined or null
         expect(carDetails).not.toBeUndefined();

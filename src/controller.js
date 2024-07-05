@@ -31,7 +31,7 @@ const getAllCars = (req, res) => {
       // Check if the property is directly on carObject and not inherited
       const carDetails = carObject[carName];
       console.log(
-        `Car Name: ${carName}, Total: ${carDetails.addCarNameNumbers}, Year: ${carDetails.carYear}`
+        `Car Brand: ${carName}, Car Price: $${carDetails.addCarNameNumbers}, Year: ${carDetails.carYear}`
       );
     }
     res.send(carObject);
